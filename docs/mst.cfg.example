@@ -1,0 +1,17 @@
+{
+	"generator": "android",
+	"paths": {
+		"en": "res/values/strings.xml",
+		"de": "res/values-de/strings.xml",
+		"el": "res/values-el/strings.xml",
+		"es": "res/values-es/strings.xml",
+		"fr": "res/values-fr/strings.xml",
+		"it": "res/values-it/strings.xml",
+		"pl": "res/values-pl/strings.xml",
+		"pt": "res/values-pt/strings.xml",
+		"ru": "res/values-ru/strings.xml",
+		"sl": "res/values-sl/strings.xml",
+		"tr": "res/values-tr/strings.xml",
+		"zh": "res/values-zh/strings.xml"
+	}
+}

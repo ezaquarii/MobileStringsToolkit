@@ -1,0 +1,36 @@
+<?xml version="1.0" ?>
+<resources>
+	<string name="string_one">un</string>
+	<string name="string_two">Deux</string>
+	<string name="dog">chien</string>
+	<string name="red">rouge</string>
+	<string name="sparse"></string>
+	<string-array name="first_array">
+		<item>first_fr_array_0</item>
+		<item>first_fr_array_1</item>
+		<item>first_fr_array_2</item>
+		<item>first_fr_array_3</item>
+	</string-array>
+	<string-array name="second_array">
+		<item>second_fr_array_0</item>
+		<item>second_fr_array_1</item>
+		<item>second_fr_array_2</item>
+		<item>second_fr_array_3</item>
+	</string-array>
+	<plurals name="first_plural">
+		<item quantity="zero">first_fr_plural_0</item>
+		<item quantity="one">first_fr_plural_1</item>
+		<item quantity="two">first_fr_plural_2</item>
+		<item quantity="few">first_fr_plural_3</item>
+		<item quantity="many">first_fr_plural_4</item>
+		<item quantity="other">first_fr_plural_5</item>
+	</plurals>
+	<plurals name="second_plural">
+		<item quantity="zero">second_fr_plural_0</item>
+		<item quantity="one">second_fr_plural_1</item>
+		<item quantity="two">second_fr_plural_2</item>
+		<item quantity="few">second_fr_plural_3</item>
+		<item quantity="many">second_fr_plural_4</item>
+		<item quantity="other">second_fr_plural_5</item>
+	</plurals>
+</resources>
