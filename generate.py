@@ -1,6 +1,6 @@
 #     This file is part of Mobile Strings Toolkit
 #     
-#     Copyright (C) 2013 Krzysztof Narkiewicz <krzysztof.narkiewicz@ezaquarii.com>
+#     Copyright (C) 2014 Krzysztof Narkiewicz <krzysztof.narkiewicz@ezaquarii.com>
 #     
 #     Mobile Strings Toolkit is free software; you can redistribute it and/or modify
 #     it under the terms of the GNU General Public License as published by
@@ -21,9 +21,10 @@ from mst import Config
 from mst import Factory
 from mst import Spreadsheet
 from mst import Log
+from mst import const
 from mst.exceptions import MstException
 
-print("Mobile String Toolkit generator, v1.0\nCopyright (C) 2013 by Krzysztof Narkiewicz <krzysztof.narkiewicz@ezaquarii.com>\n")
+print("Mobile String Toolkit generator, v%s\nCopyright (C) 2014 by Krzysztof Narkiewicz <krzysztof.narkiewicz@ezaquarii.com>\n" % const.version)
 
 try:
     parser = argparse.ArgumentParser(description='')
