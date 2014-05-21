@@ -44,7 +44,7 @@ try:
     elif args.csv_loader != None and args.google_loader == None:
         loader = Factory.create_loader( Factory.LOADER_CSV, args.csv_loader )
     else:
-        raise RuntimeError('No loader defined in command line')
+        raise MstException("""No loader defined in command line. I don't know how to load translations. RTF(riendly)M.""")
 
     key_id = Factory.create_key_id(config.generator)
 
