@@ -1,31 +1,31 @@
-type,android_id,en,fr,es,options
-,,,,,
-string,string_one,one,un,uno,option1; option2; option3
-string,string_two,two,Deux,diez,option1; option2; option3
-string,dog,dog,chien,perro,option1; option2; option3
-string,red,red,rouge,rojo,option1; option2; option3
-string,sparse,sparse,,,
-,,,,,
-string-array,first_array:0,first_en_array_0,first_fr_array_0,first_es_array_0,option_0
-string-array,first_array:1,first_en_array_1,first_fr_array_1,first_es_array_1,option_1
-string-array,first_array:2,first_en_array_2,first_fr_array_2,first_es_array_2,option_2
-string-array,first_array:3,first_en_array_3,first_fr_array_3,first_es_array_3,option_3
-,,,,,
-string-array,second_array:0,second_en_array_0,second_fr_array_0,second_es_array_0,option_0
-string-array,second_array:1,second_en_array_1,second_fr_array_1,second_es_array_1,option_1
-string-array,second_array:2,second_en_array_2,second_fr_array_2,second_es_array_2,option_2
-string-array,second_array:3,second_en_array_3,second_fr_array_3,second_es_array_3,option_3
-,,,,,
-plurals,first_plural:zero,first_en_plural_0,first_fr_plural_0,first_es_plural_0,option_zero
-plurals,first_plural:one,first_en_plural_1,first_fr_plural_1,first_es_plural_1,option_one
-plurals,first_plural:two,first_en_plural_2,first_fr_plural_2,first_es_plural_2,option_two
-plurals,first_plural:few,first_en_plural_3,first_fr_plural_3,first_es_plural_3,option_few
-plurals,first_plural:many,first_en_plural_4,first_fr_plural_4,first_es_plural_4,option_many
-plurals,first_plural:other,first_en_plural_5,first_fr_plural_5,first_es_plural_5,option_other
-,,,,,
-plurals,second_plural:zero,second_en_plural_0,second_fr_plural_0,second_es_plural_0,option_zero
-plurals,second_plural:one,second_en_plural_1,second_fr_plural_1,second_es_plural_1,option_one
-plurals,second_plural:two,second_en_plural_2,second_fr_plural_2,second_es_plural_2,option_two
-plurals,second_plural:few,second_en_plural_3,second_fr_plural_3,second_es_plural_3,option_few
-plurals,second_plural:many,second_en_plural_4,second_fr_plural_4,second_es_plural_4,option_many
-plurals,second_plural:other,second_en_plural_5,second_fr_plural_5,second_es_plural_5,option_other
+type,android_id,ios_id,en,fr,es,options
+,,,,,,
+string,string_one,string_one,one,un,uno,option1; option2; option3
+string,string_two,string_two,two,Deux,diez,option1; option2; option3
+string,dog,dog,dog,chien,perro,option1; option2; option3
+string,red,red,red,rouge,rojo,option1; option2; option3
+string,sparse,sparse,sparse,,,
+,,,,,,
+string-array,first_array:0,,first_en_array_0,first_fr_array_0,first_es_array_0,option_0
+string-array,first_array:1,,first_en_array_1,first_fr_array_1,first_es_array_1,option_1
+string-array,first_array:2,,first_en_array_2,first_fr_array_2,first_es_array_2,option_2
+string-array,first_array:3,,first_en_array_3,first_fr_array_3,first_es_array_3,option_3
+,,,,,,
+string-array,second_array:0,,second_en_array_0,second_fr_array_0,second_es_array_0,option_0
+string-array,second_array:1,,second_en_array_1,second_fr_array_1,second_es_array_1,option_1
+string-array,second_array:2,,second_en_array_2,second_fr_array_2,second_es_array_2,option_2
+string-array,second_array:3,,second_en_array_3,second_fr_array_3,second_es_array_3,option_3
+,,,,,,
+plurals,first_plural:zero,,first_en_plural_0,first_fr_plural_0,first_es_plural_0,option_zero
+plurals,first_plural:one,,first_en_plural_1,first_fr_plural_1,first_es_plural_1,option_one
+plurals,first_plural:two,,first_en_plural_2,first_fr_plural_2,first_es_plural_2,option_two
+plurals,first_plural:few,,first_en_plural_3,first_fr_plural_3,first_es_plural_3,option_few
+plurals,first_plural:many,,first_en_plural_4,first_fr_plural_4,first_es_plural_4,option_many
+plurals,first_plural:other,,first_en_plural_5,first_fr_plural_5,first_es_plural_5,option_other
+,,,,,,
+plurals,second_plural:zero,,second_en_plural_0,second_fr_plural_0,second_es_plural_0,option_zero
+plurals,second_plural:one,,second_en_plural_1,second_fr_plural_1,second_es_plural_1,option_one
+plurals,second_plural:two,,second_en_plural_2,second_fr_plural_2,second_es_plural_2,option_two
+plurals,second_plural:few,,second_en_plural_3,second_fr_plural_3,second_es_plural_3,option_few
+plurals,second_plural:many,,second_en_plural_4,second_fr_plural_4,second_es_plural_4,option_many
+plurals,second_plural:other,,second_en_plural_5,second_fr_plural_5,second_es_plural_5,option_other

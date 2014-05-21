@@ -18,8 +18,7 @@
 
 import argparse
 from mst import Config
-from mst import GeneratorFactory
-from mst import LoaderFactory
+from mst import Factory
 from mst import Spreadsheet
 from mst import Log
 from mst.exceptions import MstException
@@ -34,21 +33,23 @@ try:
     parser.add_argument('-c', '--config', nargs=1, default=['mst.cfg'], help='Configuration file')
     parser.add_argument('-v',  '--verbose',  action='store_true',  help='Verbose mode')
     args = parser.parse_args()
-    
+
     # load configuration from project root
     config = Config( args.project_root[0],  args.verbose, args.config[0] )
     Log.init(args.verbose)
     
     # create loader - this will also load resources data
     if args.csv_loader == None and args.google_loader != None:
-        loader = LoaderFactory.create( LoaderFactory.GOOGLEDOCS, args.google_loader )
+        loader = Factory.create_loader( Factory.LOADER_GOOGLEDOCS, args.google_loader )
     elif args.csv_loader != None and args.google_loader == None:
-        loader = LoaderFactory.create( LoaderFactory.CSV, args.csv_loader )
+        loader = Factory.create_loader( Factory.LOADER_CSV, args.csv_loader )
     else:
         raise RuntimeError('No loader defined in command line')
-    
+
+    key_id = Factory.create_key_id(config.generator)
+
     # create a spreadsheet with loaded data
-    sheet = Spreadsheet('android_id', loader.data, config.languages )
+    sheet = Spreadsheet(key_id, loader.data, config.languages)
     
     # extract resources from the spreadsheet
     strings = sheet.get_strings()
@@ -59,15 +60,18 @@ try:
     Log.print( 'Generator:    %s' % config.generator )
     Log.print( 'Loader:       %s' % loader )
     Log.print( 'Languages:    %s' % ', '.join(config.languages) )
+    Log.print( 'ID key:       %s' % key_id)
     Log.print( 'Generating language resources...' )
-    
+
+    generator = Factory.create_generator(config.generator)
+    generator.add_resources(strings)
+    generator.add_resources(string_arrays)
+    generator.add_resources(quantity_strings)
+
     # for each language create a platform-specific generator and
     # generate resource files
     for language in config.languages:
-        generator = GeneratorFactory.create( config.generator )
-        generator.addResources(strings, language)
-        generator.addResources(string_arrays, language)
-        generator.addResources(quantity_strings, language)
+        generator.generate(language)
         generator.write( config.resource_file_path(language) )
         if config.verbose:
             params = (language, config.resource_file_path(language), len(strings), len(string_arrays), len(quantity_strings) )

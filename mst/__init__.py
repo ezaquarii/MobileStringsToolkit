@@ -14,10 +14,9 @@
 #     along with Mobile Strings Toolkit; if not, write to the Free Software
 #     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-from .loader import LoaderFactory
 from .spreadsheet import Spreadsheet
 from .resources import String, StringArray, QuantityStrings
 from .log import Log 
 from .exceptions import MstException
-from .generator import GeneratorFactory
 from .config import Config
+from .factory import Factory

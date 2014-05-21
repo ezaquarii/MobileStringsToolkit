@@ -18,6 +18,7 @@
 
 import xml.dom.minidom as xml
 import os
+import unicodedata
 
 from mst.resources import (String, StringArray, QuantityStrings)
 
@@ -33,24 +34,6 @@ class Escape(object):
         # FIX: use regexp here, it's a small hack to do my job today
         return string.replace("\\'", "\'").replace("\'", "\\'")
 
-class GeneratorFactory(object):
-    """
-    Factory for generator objects. It can create generator
-    for iOS or Android.
-    """
-    
-    ANDROID = 'android'
-    IOS = 'ios'
-    
-    @staticmethod
-    def create(generator_type):
-        if generator_type == GeneratorFactory.ANDROID:
-            return AndroidGenerator()
-        elif generator_type == GeneratorFactory.IOS:
-            raise NotImplementedError('iOS generator is not implemented yet')
-        else:
-            raise RuntimeError('Unknown generator requested: ' + str(generator_type) )
-        
 
 class Generator(object):
     """
@@ -63,38 +46,52 @@ class Generator(object):
     """
     
     def __init__(self):
-        pass
-    
-    def addResources(self, resources, language):
+        self.__strings = []
+        self.__arrays = []
+        self.__plurals = []
+
+    def init(self):
+        raise NotImplementedError('Abstract method is not implemented')
+
+    def add_resources(self, resources):
         """
         Add resources to the generator. It adds iterable collection
         of resource objects.
         """
         for res in resources:
             if isinstance(res, String):
-                self._addString(res, language)
+                self.__strings.append(res)
             elif isinstance(res, StringArray):
-                self._addStringArray(res, language)
+                self.__arrays.append(res)
             elif isinstance(res, QuantityStrings):
-                self._addQuantityString(res, language)
+                self.__plurals.append(res)
             else:
                 raise TypeError("Unknown resource type: %s" % str( res.__class__) )
-    
+
+    def generate(self, language):
+        self.init()
+        for s in self.__strings:
+            self._add_string(s, language)
+        for a in self.__arrays:
+            self._add_string_array(a, language)
+        for p in self.__plurals:
+            self._add_quantity_string(p, language)
+
     def write(self, file):
-        raise NotImplemented('Abstract method is not implemented')
+        raise NotImplementedError('Abstract method is not implemented')
     
-    def _addString(self, resource, language):
-        raise NotImplemented('Abstract method is not implemented')
+    def _add_string(self, resource, language):
+        raise NotImplementedError('Abstract method is not implemented')
     
-    def _addStringArray(self, resource, language):
-        raise NotImplemented('Abstract method is not implemented')
+    def _add_string_array(self, resource, language):
+        raise NotImplementedError('Abstract method is not implemented')
     
-    def _addQuantityString(self, resource, language):
-        raise NotImplemented('Abstract method is not implemented')
+    def _add_quantity_string(self, resource, language):
+        raise NotImplementedError('Abstract method is not implemented')
 
 
-    
-class AndroidGenerator(Generator):
+
+class AndroidXmlGenerator(Generator):
     '''
     This is a string resources generator for Android platform. It will generate
     resource XML strings that you can write to your res/values files.
@@ -104,30 +101,36 @@ class AndroidGenerator(Generator):
     '''
     def __init__(self):
         Generator.__init__(self)
+        self.doc = None
+        self.root = None
+
+    def init(self):
         self.doc = xml.Document()
         self.root = self.doc.createElement('resources')
         self.doc.appendChild(self.root)
     
-    def _addString(self, resource, language):
+    def _add_string(self, resource, language):
         string = self.doc.createElement('string')
         string.setAttribute('name', resource.key)
         text = Escape.escape(resource.get(language))
-        text_node = self.doc.createTextNode( text )
-        string.appendChild(text_node)
-        self.root.appendChild(string)
+        if len(text) > 0:
+            text_node = self.doc.createTextNode( text )
+            string.appendChild(text_node)
+            self.root.appendChild(string)
         
-    def _addStringArray(self, resource, language):
+    def _add_string_array(self, resource, language):
         array = self.doc.createElement('string-array')
         array.setAttribute('name', resource.key)
         for item_text in resource.get_array(language):
-            text = Escape.escape( item_text )
-            text_node = self.doc.createTextNode( text )
-            item_element = self.doc.createElement('item')
-            item_element.appendChild(text_node)
-            array.appendChild(item_element)
+            if len(item_text) > 0:
+                text = Escape.escape( item_text )
+                text_node = self.doc.createTextNode( text )
+                item_element = self.doc.createElement('item')
+                item_element.appendChild(text_node)
+                array.appendChild(item_element)
         self.root.appendChild(array)
 
-    def _addQuantityString(self, resource, language):
+    def _add_quantity_string(self, resource, language):
         plurals = self.doc.createElement('plurals')
         plurals.setAttribute('name', resource.key)
         # check for each quantity defined in schema and
@@ -148,7 +151,7 @@ class AndroidGenerator(Generator):
         Create XML string from current DOM.
         '''
         return self.doc.toprettyxml()
-    
+
     def write(self, file):
         # first ensure directory is created
         directory = os.path.dirname(file)
@@ -158,6 +161,100 @@ class AndroidGenerator(Generator):
         f = open(file, 'w')
         f.write( self.xml )
         f.close()
+
+
+class AndroidGenerator(Generator):
+    '''
+    This is a string resources generator for Android platform. It will generate
+    resource XML strings that you can write to your res/values files.
+
+    By default it starts with empty DOM. Add resources to populate DOM and read
+    XML string once you're done.
+    '''
+    def __init__(self):
+        Generator.__init__(self)
+        self.xml_head = '<?xml version="1.0" encoding="utf-8"?>\n<resources">\n\n'
+        self.xml_tail = '\n\n</resources>'
+        self.xml_body = ''
+
+    def init(self):
+        self.xml_body = ''
+
+    def _add_string(self, resource, language):
+        text = Escape.escape(resource.get(language))
+        if len(text) > 0:
+            string_item = '<string name="%s">%s</string>\n' % (resource.key, text)
+            self.xml_body += string_item
+
+    def _add_string_array(self, resource, language):
+        xml_head = '<string-array name="%s">\n' % resource.key
+        xml_tail = '</string-array>\n'
+        xml_items = ''
+
+        for item_text in resource.get_array(language):
+            if len(item_text) > 0:
+                xml_items += '\t<item>%s</item>\n' % Escape.escape(item_text)
+
+        if len(xml_items) > 0:
+            self.xml_body += xml_head + xml_items + xml_tail
+
+    def _add_quantity_string(self, resource, language):
+        xml_head = '<plurals name="%s">\n' % resource.key
+        xml_tail = '</plurals>\n'
+        xml_items = ''
+        xml_item_fmt = '\t<item quantity="%s">%s</item>\n'
+        # check for each quantity defined in schema and
+        # add add it to XML only of string is not empty
+        for quantity in QuantityStrings.QUANTITIES:
+            quantity_text = Escape.escape( resource.get_quantity_string(language, quantity) )
+            if len(quantity_text) > 0:
+                xml_items += xml_item_fmt % (quantity, Escape.escape(quantity_text) )
+
+        if len(xml_items) > 0:
+            self.xml_body += xml_head + xml_items + xml_tail
+
+    @property
+    def xml(self):
+        all = self.xml_head + self.xml_body + self.xml_tail
+        return unicodedata.normalize('NFC', all)
+
+    def write(self, file):
+        # first ensure directory is created
+        directory = os.path.dirname(file)
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+        # open and write file contents
+        f = open(file, 'w')
+        f.write( self.xml )
+        f.close()
+
         
-        
-    
+class AppleGenerator(Generator):
+
+    def __init__(self):
+        Generator.__init__(self)
+        self.doc = ''
+
+    def init(self):
+        self.doc = ''
+
+    def _add_string(self, resource, language):
+        text = resource.get(language)
+        if len(text) > 0:
+            self.doc += '"%s" = "%s";\n' % (resource.key, resource.get(language))
+
+    def _add_string_array(self, resource, language):
+        pass
+
+    def _add_quantity_string(self, resource, language):
+        pass
+
+    def write(self, file):
+        # first ensure directory is created
+        directory = os.path.dirname(file)
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+        # open and write file contents
+        f = open(file, 'w')
+        f.write( self.doc )
+        f.close()

@@ -20,24 +20,6 @@ import csv
 import mst.gspread as gspread
 from mst.exceptions import MstException
 
-class LoaderFactory(object):
-    
-    GOOGLEDOCS = 'googledocs'
-    CSV = 'csv'
-    
-    @staticmethod
-    def create(loader_type, loader_args):
-        if loader_type == LoaderFactory.GOOGLEDOCS:
-            user = loader_args[0]
-            password = loader_args[1]
-            spreadsheet = loader_args[2]
-            return LoaderGoogle(user, password, spreadsheet)
-        elif loader_type == LoaderFactory.CSV:
-            file = loader_args[0]
-            return LoaderCsv(file)
-        else:
-            raise RuntimeError('Unknown loader requested: ' + str(loader_type) )
-            
 
 class Loader(object):
     '''
