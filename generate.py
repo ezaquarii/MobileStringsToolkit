@@ -56,14 +56,16 @@ try:
     string_arrays = sheet.get_string_arrays()
     quantity_strings = sheet.get_quantity_strings()
     
-    Log.print( 'Project root: %s' % config.root )
-    Log.print( 'Generator:    %s' % config.generator )
-    Log.print( 'Loader:       %s' % loader )
-    Log.print( 'Languages:    %s' % ', '.join(config.languages) )
-    Log.print( 'ID key:       %s' % key_id)
+    Log.print( 'Project root:  %s' % config.root )
+    Log.print( 'Generator:     %s' % config.generator )
+    Log.print( 'Loader:        %s' % loader )
+    Log.print( 'Languages:     %s' % ', '.join(config.languages) )
+    Log.print( 'ID key:        %s' % key_id)
+    Log.print( 'Sorted by key: %s' % config.sorted)
     Log.print( 'Generating language resources...' )
 
     generator = Factory.create_generator(config.generator)
+    generator.sorted = config.sorted
     generator.add_resources(strings)
     generator.add_resources(string_arrays)
     generator.add_resources(quantity_strings)

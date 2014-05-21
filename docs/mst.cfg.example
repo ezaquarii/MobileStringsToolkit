@@ -1,5 +1,6 @@
 {
 	"generator": "android",
+	"sorted": true
 	"paths": {
 		"en": "res/values/strings.xml",
 		"de": "res/values-de/strings.xml",

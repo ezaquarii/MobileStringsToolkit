@@ -117,6 +117,9 @@ class String(Resource):
             builder.append( "'%s': '%s'" % (lang, text) )
         args = { 'class': self.__class__.__name__, 'langs': self.languages, 'strings': ', '.join(builder) }
         return "%(class)s: langs: %(langs)s, strings: {%(strings)s}" % args
+
+    def __lt__(self, other):
+        return self.key < other.key
         
         
 class StringArray(Resource):

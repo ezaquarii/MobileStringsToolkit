@@ -47,11 +47,14 @@ to obtain usage instructions.
 
 To generate proper resources we must create a configuration file in 
 project root. This file contains information about generator (ie. output format)
-and list of files we want to write our translations to. Configuration file is in 
+and list of files we want to write our translations to. Parameter *sorted* tells if
+output strings should be sorted by key alphabetically. This should mitigate
+large commits when somebody sorts spreadsheet. Configuration file is in 
 JSON format:
 ```JSON
 {
 	"generator": "android",
+	"sorted": true
 	"paths": {
 		"en": "res/values/strings.xml",
 		"de": "res/values-de/strings.xml",

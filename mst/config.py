@@ -34,6 +34,7 @@ class Config(object):
             data = json.load(file)
             self.__generator = data['generator']
             self.__paths = data['paths']
+            self.__sorted = data.get('sorted', True)
         except FileNotFoundError:
             raise MstException("Cannot open config file: %s" % os.path.join(project_root, config_file) )
         
@@ -70,7 +71,12 @@ class Config(object):
         Project root, where generated files will be written.
         """
         return self.__root
-    
+
+    @property
+    def sorted(self):
+        """If True, strings should be sorted by key"""
+        return self.__sorted
+
     def resource_file_path(self, language):
         """
         Returns file path for a given language. File will be

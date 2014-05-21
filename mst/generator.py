@@ -45,13 +45,22 @@ class Generator(object):
     * _addQuantityString()
     """
     
-    def __init__(self):
+    def __init__(self, sorted=False):
         self.__strings = []
         self.__arrays = []
         self.__plurals = []
+        self.__sorted = sorted
 
     def init(self):
         raise NotImplementedError('Abstract method is not implemented')
+
+    @property
+    def sorted(self):
+        return self.__sorted
+
+    @sorted.setter
+    def sorted(self, s):
+        self.__sorted = s
 
     def add_resources(self, resources):
         """
@@ -70,11 +79,14 @@ class Generator(object):
 
     def generate(self, language):
         self.init()
-        for s in self.__strings:
+        strings = sorted(self.__strings) if self.sorted else self.__strings
+        arrays = sorted(self.__arrays) if self.sorted else self.__arrays
+        plurals = sorted(self.__plurals) if self.sorted else self.__plurals
+        for s in strings:
             self._add_string(s, language)
-        for a in self.__arrays:
+        for a in arrays:
             self._add_string_array(a, language)
-        for p in self.__plurals:
+        for p in plurals:
             self._add_quantity_string(p, language)
 
     def write(self, file):
